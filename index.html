@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Retro Typing Speed Test</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Matrix Rain Background -->
+    <canvas id="matrix-canvas"></canvas>
+    
+    <!-- Main Container -->
+    <div class="container">
+        <!-- Header -->
+        <header class="header">
+            <div class="header-content">
+                <h1 class="logo">
+                    <span class="typewriter">RETRO_TYPE.EXE</span>
+                </h1>
+                <div class="header-controls">
+                    <button id="theme-toggle" class="control-btn" title="Toggle Theme">
+                        <span class="theme-icon">🌙</span>
+                    </button>
+                    <button id="sound-toggle" class="control-btn" title="Toggle Sound">
+                        <span class="sound-icon">🔊</span>
+                    </button>
+                    <button id="home-btn" class="control-btn home-btn" title="Home" style="display: none;">
+                        <span>🏠</span>
+                    </button>
+                    <button id="chatbot-toggle" class="control-btn" title="Typing Assistant">
+                        <span>💬</span>
+                    </button>
+                </div>
+            </div>
+        </header>
+
+        <!-- Home Screen -->
+        <div id="home-screen" class="screen active">
+            <div class="welcome-section">
+                <h2 class="welcome-title">Welcome to the Matrix</h2>
+                <p class="welcome-subtitle">Test your typing skills in the digital realm</p>
+            </div>
+
+            <div class="mode-selection">
+                <h3 class="section-title">Choose Your Challenge</h3>
+                <div class="mode-grid">
+                    <div class="mode-card" data-mode="classic">
+                        <div class="mode-icon">⌨️</div>
+                        <h4>Classic Mode</h4>
+                        <p>Traditional typing test with real-time feedback</p>
+                    </div>
+                    <div class="mode-card" data-mode="voice">
+                        <div class="mode-icon">🎤</div>
+                        <h4>Voice Input</h4>
+                        <p>Speak the words using voice recognition</p>
+                    </div>
+                    <div class="mode-card" data-mode="ai-duel">
+                        <div class="mode-icon">🤖</div>
+                        <h4>AI Duel</h4>
+                        <p>Race against an AI opponent</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="settings-section">
+                <h3 class="section-title">Configuration</h3>
+                <div class="settings-grid">
+                    <div class="setting-group">
+                        <label for="text-type">Text Type:</label>
+                        <select id="text-type" class="setting-select">
+                            <option value="words">Random Words</option>
+                            <option value="quotes">Famous Quotes</option>
+                            <option value="custom">Custom Text</option>
+                        </select>
+                    </div>
+                    <div class="setting-group">
+                        <label for="difficulty">Difficulty:</label>
+                        <select id="difficulty" class="setting-select">
+                            <option value="easy">Easy</option>
+                            <option value="medium">Medium</option>
+                            <option value="hard">Hard</option>
+                        </select>
+                    </div>
+                    <div class="setting-group">
+                        <label for="duration">Duration:</label>
+                        <select id="duration" class="setting-select">
+                            <option value="30">30 seconds</option>
+                            <option value="60">1 minute</option>
+                            <option value="120">2 minutes</option>
+                        </select>
+                    </div>
+                </div>
+                <div id="custom-text-area" class="custom-text-section" style="display: none;">
+                    <label for="custom-text">Enter your custom text:</label>
+                    <textarea id="custom-text" placeholder="Type your custom text here..."></textarea>
+                </div>
+            </div>
+        </div>
+
+        <!-- Game Screen -->
+        <div id="game-screen" class="screen">
+            <div class="game-header">
+                <div class="stats-bar">
+                    <div class="stat-item">
+                        <span class="stat-label">WPM</span>
+                        <span id="wpm-display" class="stat-value">0</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-label">Accuracy</span>
+                        <span id="accuracy-display" class="stat-value">100%</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-label">Errors</span>
+                        <span id="errors-display" class="stat-value">0</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-label">Time</span>
+                        <span id="time-display" class="stat-value">0:00</span>
+                    </div>
+                </div>
+                <div class="progress-container">
+                    <div id="progress-bar" class="progress-bar"></div>
+                </div>
+            </div>
+
+            <div class="game-content">
+                <div id="text-display" class="text-display"></div>
+                
+                <!-- Voice Input Helper (for Voice mode) -->
+                <div id="voice-helper" class="voice-helper" style="display: none;">
+                  <div class="voice-helper-content">
+                    <h4>🎤 Say this word:</h4>
+                    <div id="current-word-display" class="current-word-display"></div>
+                    <div class="voice-status-text">Listening for your voice...</div>
+                  </div>
+                </div>
+
+                <div class="input-section">
+                    <input type="text" id="text-input" class="text-input" placeholder="Start typing..." autocomplete="off" spellcheck="false">
+                    <div class="input-controls">
+                        <button id="voice-btn" class="voice-btn" style="display: none;">
+                            <span class="voice-status">🎤 Click to speak</span>
+                        </button>
+                        <button id="start-btn" class="start-btn">Start Test</button>
+                        <button id="reset-btn" class="reset-btn">Reset</button>
+                    </div>
+                </div>
+
+                <!-- AI Opponent (for AI Duel mode) -->
+                <div id="ai-opponent" class="ai-opponent" style="display: none;">
+                    <h4>AI Opponent</h4>
+                    <div class="ai-stats">
+                        <span>WPM: <span id="ai-wpm">0</span></span>
+                        <span>Progress: <span id="ai-progress">0%</span></span>
+                    </div>
+                    <div class="ai-progress-bar">
+                        <div id="ai-progress-fill" class="ai-progress-fill"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Results Screen -->
+        <div id="results-screen" class="screen">
+            <div class="results-container">
+                <h2 class="results-title">Test Complete!</h2>
+                <div class="results-grid">
+                    <div class="result-card">
+                        <div class="result-icon">⚡</div>
+                        <div class="result-label">Words Per Minute</div>
+                        <div id="final-wpm" class="result-value">0</div>
+                    </div>
+                    <div class="result-card">
+                        <div class="result-icon">🎯</div>
+                        <div class="result-label">Accuracy</div>
+                        <div id="final-accuracy" class="result-value">0%</div>
+                    </div>
+                    <div class="result-card">
+                        <div class="result-icon">❌</div>
+                        <div class="result-label">Errors</div>
+                        <div id="final-errors" class="result-value">0</div>
+                    </div>
+                    <div class="result-card">
+                        <div class="result-icon">⏱️</div>
+                        <div class="result-label">Time Taken</div>
+                        <div id="final-time" class="result-value">0:00</div>
+                    </div>
+                </div>
+                
+                <div id="ai-result" class="ai-result" style="display: none;">
+                    <h3 id="duel-outcome" class="duel-outcome"></h3>
+                    <p id="duel-details" class="duel-details"></p>
+                </div>
+
+                <div class="results-actions">
+                    <button id="try-again-btn" class="action-btn primary">Try Again</button>
+                    <button id="home-results-btn" class="action-btn secondary">Home</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Chatbot -->
+    <div id="chatbot" class="chatbot">
+      <div class="chatbot-header">
+        <h4>🤖 Typing Assistant</h4>
+        <button id="chatbot-close" class="chatbot-close">×</button>
+      </div>
+      <div id="chatbot-messages" class="chatbot-messages">
+        <div class="chat-message bot">
+          <div class="chat-avatar">🤖</div>
+          <div class="chat-content">Hi! I'm your typing assistant. Ask me about improving your typing speed, accuracy, or any questions about the app!</div>
+        </div>
+      </div>
+      <div class="chatbot-input-area">
+        <input type="text" id="chatbot-input" placeholder="Ask me anything about typing..." />
+        <button id="chatbot-send">Send</button>
+      </div>
+    </div>
+
+    <!-- Chatbot Toggle Button -->
+    <button id="chatbot-toggle" class="chatbot-toggle" title="Open Typing Assistant">
+      💬
+    </button>
+
+    <!-- Celebration Popup -->
+    <div id="celebration-overlay" class="celebration-overlay">
+      <div id="celebration-popup" class="celebration-popup">
+        <h3 id="celebration-title">🎉 Amazing!</h3>
+        <p id="celebration-message">You've achieved an incredible typing speed!</p>
+        <button id="celebration-close" class="celebration-close">Continue</button>
+      </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
