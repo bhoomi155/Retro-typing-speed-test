@@ -3,9 +3,7 @@
 Welcome to the Matrix! This retro-themed typing test lets you race against time, an AI, or your own voice — with glowing terminal vibes, animated rain, and real-time stats.
 
 ---
-
-![screenshot]
-
+[image](https://github.com/bhoomi155/Retro-typing-speed-test/blob/fb9ef4172179dad00e395dbe8df84a91f1a54c10/Screenshot%202025-07-13%20145659.png)
 ---
 
 ## 📌 What is This?
@@ -95,7 +93,7 @@ Use this project to learn or demo:
 ## 🤝 Contributors
 
 - [bhoomi155](https://github.com/bhoomi155)  
-- [Your Collaborators Here...]
+- [lokeshagarwal2304](https://github.com/lokeshagarwal2304)
 
 ---
 
