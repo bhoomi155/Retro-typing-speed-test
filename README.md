@@ -2,8 +2,7 @@
 
 A fully-responsive, retro-themed web app that challenges your typing speed and accuracy with style! Built using **HTML**, **CSS**, and **vanilla JavaScript** — no frameworks, no backend, just fast, lightweight fun.
 
-![Retro Typing Speed Test Screenshot](screenshot.png)
-
+![ image ](https://github.com/bhoomi155/Retro-typing-speed-test/blob/e7c250a8311d973e349c673f344294753e0336b1/Screenshot%202025-07-13%20145659.png)
 ---
 
 ## ✨ Features
